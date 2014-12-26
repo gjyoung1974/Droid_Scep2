@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('sc-light-jdk15on-1.47.0.2.jar'))
