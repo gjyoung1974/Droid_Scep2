@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
 			byte[] keystore = ScepClient.CertReq(sURI.toString(), tVCname.getText().toString(), tVPassword.getText().toString(), isKeyLen);
 			
 			Intent intent = KeyChain.createInstallIntent();
-			intent.putExtra(KeyChain.EXTRA_CERTIFICATE, keystore);
+			intent.putExtra(KeyChain.EXTRA_PKCS12, keystore);
 			startActivity(intent);
 			
 		} catch (MalformedURLException e) {
