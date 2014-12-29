@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:background="@android:color/black">
 
     <Button
         android:id="@+id/button1"
@@ -12,7 +13,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="73dp"
         android:onClick="GenKey"
-        android:text="Enroll" />
+        android:text="Enroll"
+        android:textColor="@android:color/white" />
 
     <Spinner
         android:id="@+id/spinner1"
@@ -31,7 +33,8 @@
         android:layout_above="@+id/spinner1"
         android:layout_alignParentLeft="true"
         android:text="Key Size"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/TextView01"
@@ -40,7 +43,8 @@
         android:layout_above="@+id/P12Password"
         android:layout_alignParentLeft="true"
         android:text="Import password"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
 
     <EditText
         android:id="@+id/Password"
@@ -71,7 +75,8 @@
         android:layout_alignBottom="@+id/TextView02"
         android:layout_alignParentLeft="true"
         android:text="Enrollment Challenge Passphrase"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
 
     <EditText
         android:id="@+id/P12Password"
@@ -106,7 +111,8 @@
         android:layout_above="@+id/CommonName"
         android:layout_alignParentLeft="true"
         android:text="Subject DN"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
 
     <EditText
         android:id="@+id/ScepURL"
@@ -128,6 +134,7 @@
         android:layout_above="@+id/ScepURL"
         android:layout_alignParentLeft="true"
         android:text="SCEP Server URL"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
