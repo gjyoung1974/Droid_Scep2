@@ -1,5 +1,6 @@
 Droid_Scep2
 ===========
+Android Certificate Enrollment client
 
 Droid Scep is an Android app (API19/KitKat) that demonstrate's jScep.org, A Java implementation of the Simple Certificate Enrolment Protocol: https://code.google.com/p/jscep/
 
