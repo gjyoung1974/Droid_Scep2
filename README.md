@@ -1,7 +1,7 @@
 Droid_Scep2
 ===========
 
-Droid Scep is an Android app (API19/KitKat) that demonstrate's David Grant's jScep, A Java implementation of the Simple Certificate Enrolment Protocol: https://code.google.com/p/jscep/
+Droid Scep is an Android app (API19/KitKat) that demonstrate's jScep.org, A Java implementation of the Simple Certificate Enrolment Protocol: https://code.google.com/p/jscep/
 
 Droid scep demonstrates how to request an x509 certificate from a simple certificate enrollment protocol enabled certification authority such as Microsoft's Network Device Entrollment Service: 
 
