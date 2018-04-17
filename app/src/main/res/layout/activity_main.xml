@@ -125,7 +125,7 @@
         android:ems="10"
         android:hint="provide SCEP URL"
         android:inputType="textUri"
-        android:text="http://pki.gordonjyoung.com/certsrv/mscep/mscep.dll/pkiclient.exe" />
+        android:text="http://pki.gordonyoung.us/certsrv/mscep/mscep.dll/pkiclient.exe" />
 
     <TextView
         android:id="@+id/textView3"

@@ -43,89 +43,83 @@ import org.spongycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
 
 public class ScepClient {
 
-	public static byte[] CertReq(String enrollentURL, String entityName, String tVPassword, int isKeyLen) throws CertStoreException, NoSuchAlgorithmException, OperatorCreationException, CertificateException, KeyStoreException, NoSuchProviderException, IOException {
-		
-		java.security.Security.addProvider(new BouncyCastleProvider());
+    public static byte[] CertReq(String enrollentURL, String entityName, String tVPassword, int isKeyLen) throws CertStoreException, NoSuchAlgorithmException, OperatorCreationException, CertificateException, KeyStoreException, NoSuchProviderException, IOException {
 
-		
-		URL server = new URL(enrollentURL);
+        //load SpongyCastle
+        java.security.Security.addProvider(new BouncyCastleProvider());
 
-		CertificateVerifier verifier = new OptimisticCertificateVerifier();
-		Client client = new Client(server, verifier);
-		
-		//CertificateVerifier verifier = new ConsoleCertificateVerifier();
-		//Client client = new Client(server, verifier);
+        URL server = new URL(enrollentURL);
 
-		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-	
-		keyGen.initialize(isKeyLen);
-		KeyPair keyPair = keyGen.genKeyPair();
+        CertificateVerifier verifier = new OptimisticCertificateVerifier();
+        Client client = new Client(server, verifier);
 
-		X500Name entity = new X500Name(entityName);
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 
-		// create a self signed cert to sign the PKCS7 envelope
-		JcaX509v3CertificateBuilder v3CertGen = new JcaX509v3CertificateBuilder(
-				entity, BigInteger.valueOf(1), new Date(
-						System.currentTimeMillis()), new Date(
-						System.currentTimeMillis()
-								+ (1000L * 60 * 60 * 24 * 100)), entity,
-				keyPair.getPublic());
-		
-		JcaContentSignerBuilder csb = new JcaContentSignerBuilder("SHA256withRSA");
-		ContentSigner cs = csb.build(keyPair.getPrivate());
-		X509CertificateHolder certH = v3CertGen.build(cs);
-		JcaX509CertificateConverter conVert = new JcaX509CertificateConverter();
-		X509Certificate cert = conVert.getCertificate(certH);
+        keyGen.initialize(isKeyLen);
+        KeyPair keyPair = keyGen.genKeyPair();
 
-		// generate the CSR
-		PKCS10CertificationRequestBuilder crb = new JcaPKCS10CertificationRequestBuilder(
-				entity, keyPair.getPublic());
-	
-		// set the password
-		DERPrintableString password = new DERPrintableString(tVPassword);
-		crb.addAttribute(PKCSObjectIdentifiers.pkcs_9_at_challengePassword,
-				password);
+        X500Name entity = new X500Name(entityName);
 
-		// Send the enrollment request
-		EnrollmentResponse response = new EnrollmentResponse(null);
-		try {
-			response = client.enrol(cert, keyPair.getPrivate(), crb.build(cs), "NDESCA");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        // create a self signed cert to sign the PKCS7 envelope
+        JcaX509v3CertificateBuilder v3CertGen = new JcaX509v3CertificateBuilder(
+                entity, BigInteger.valueOf(1), new Date(
+                System.currentTimeMillis()), new Date(
+                System.currentTimeMillis()
+                        + (1000L * 60 * 60 * 24 * 100)), entity,
+                keyPair.getPublic());
 
-		Certificate certz[] = new Certificate[1];
-		// Automatic enrollment, so this should be issued
-		if (response.isSuccess()) {
+        JcaContentSignerBuilder csb = new JcaContentSignerBuilder("SHA256withRSA");
+        ContentSigner cs = csb.build(keyPair.getPrivate());
+        X509CertificateHolder certH = v3CertGen.build(cs);
+        JcaX509CertificateConverter conVert = new JcaX509CertificateConverter();
+        X509Certificate cert = conVert.getCertificate(certH);
 
-			CertStore store = response.getCertStore();
-			Collection<? extends Certificate> certs = store.getCertificates(null);
-			
-			@SuppressWarnings("unchecked")
-			Iterator<Certificate> ir = (Iterator<Certificate>) certs.iterator();
+        // generate the CSR
+        PKCS10CertificationRequestBuilder crb = new JcaPKCS10CertificationRequestBuilder(
+                entity, keyPair.getPublic());
 
-			int i = 0;
-			while (ir.hasNext()) {		
-				 certz[i] = ir.next();
-				System.out.println(certz[i]);
-			}
-		}
-		
-		
-		KeyStore keyStore = KeyStore.getInstance("PKCS12","BC");
-		//KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-		keyStore.load(null,null);
-		
-		keyStore.setKeyEntry("mykey", (Key)keyPair.getPrivate(), "Password1!".toCharArray(), certz);
-		
-		//setKeyEntry("mykey", keyPair.getPrivate().getEncoded(), certz);
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		keyStore.store(bout, "Password1!".toCharArray()); // this is the password to open the .p12
-		
-		byte [] keystore = bout.toByteArray();
-		bout.close();
-		
-		return keystore;
-		
-	}
+        // set the password
+        DERPrintableString password = new DERPrintableString(tVPassword);
+        crb.addAttribute(PKCSObjectIdentifiers.pkcs_9_at_challengePassword,
+                password);
+
+        // Send the enrollment request
+        EnrollmentResponse response = new EnrollmentResponse(null);
+        try {
+            response = client.enrol(cert, keyPair.getPrivate(), crb.build(cs), "NDESCA");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Certificate certz[] = new Certificate[1];
+        // Automatic enrollment, so this should be issued
+        if (response.isSuccess()) {
+
+            CertStore store = response.getCertStore();
+            Collection<? extends Certificate> certs = store.getCertificates(null);
+
+            @SuppressWarnings("unchecked")
+            Iterator<Certificate> ir = (Iterator<Certificate>) certs.iterator();
+
+            int i = 0;
+            while (ir.hasNext()) {
+                certz[i] = ir.next();
+                System.out.println(certz[i]);
+            }
+        }
+
+        KeyStore keyStore = KeyStore.getInstance("PKCS12", "BC");
+        keyStore.load(null, null);
+
+        keyStore.setKeyEntry("mykey", (Key) keyPair.getPrivate(), "Password1!".toCharArray(), certz);
+
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        keyStore.store(bout, "Password1!".toCharArray()); // this is the password to open the .p12
+
+        byte[] keystore = bout.toByteArray();
+        bout.close();
+
+        return keystore;
+
+    }
 }
